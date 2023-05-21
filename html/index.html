@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Mural de Mensagens - XPTO</title>
+
+<style>
+/* Estilos CSS para o mural de mensagens */
+body {
+background-color: #092133;
+  font-family: Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, sans-serif;
+
+}
+
+header {
+  background-color: #1B6196;
+  padding: 10px;
+  text-align: center;
+}
+
+h1 {
+  margin: 0;
+}
+
+#message-board {
+  display: flex;
+  flex-wrap: wrap;
+  max-height: 400px;
+  overflow-y: auto;
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  justify-content: center;
+}
+
+.message {
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  position: relative;
+  width: 300px; /* Ajuste a largura conforme necessário */
+  min-height: 100px; /* Ajuste a altura mínima conforme necessário */
+}
+
+.message .content {
+  overflow: hidden;
+  max-height: 100px; /* Ajuste a altura máxima conforme necessário */
+}
+
+.message .meta {
+  font-size: 12px;
+  color: #888;
+}
+
+.message .see-more {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 12px;
+  color: #2980b9;
+  cursor: pointer;
+}
+
+.message.expanded {
+  height: auto !important;
+}
+
+.reply-form {
+  margin-top: 10px;
+  display: none;
+}
+
+footer {
+  background-color: #6b8599;
+  padding: 5px;
+  border: 2px solid #1B6196;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+#message-form {
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+#message-form input,
+#message-form textarea {
+  display: block;
+  margin: 0 auto;
+  width: 60%;
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#message-form button {
+  display: block;
+  margin: 0 auto;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #1B6196;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.footer-expanded {
+      height: auto !important;
+    }
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-button {
+    margin-right: auto;
+}
+
+.footer-form {
+    display: none;
+}
+
+.footer-form.show {
+    display: block;
+}
+
+/* Classe para exibir o formulário */
+.show #message-form {
+  display: block;
+}
+
+.show #expand-form {
+  background-color: #E53935;
+}
+#expand-form {
+  display: block;
+  margin: 0 auto;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #1B6196;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+</style>
+
+    </head>
+    <body>
+        <header>
+            <h1>XPTO</h1>
+        </header>
+<!-- Mensagens serão exibidas aqui -->
+        <div id="message-board">
+        <!-- As mensagens serão geradas dinamicamente aqui -->
+        </div>
+
+        <script>
+        // variável "messagesData" que contém os dados das mensagens do banco de dados
+        const messagesData = [
+            { id: 1, content: "Docker/Intranet", user: "Samuel" },
+            { id: 2, content: "Acesso remoto aos servidores da empresa e compartilhamento e repositórios de documentos e arquivos.", user: "Jeferson" },
+            { id: 3, content: "Conexão segura com VPN.", user: "Cris" },
+            { id: 4, content: "Gerenciamento de rede.", user: "Alexandre" },
+            { id: 5, content: "Windows Server", user: "Renata" }
+        ];
+
+        // Função para gerar as mensagens no mural
+        function generateMessages() {
+            const messageBoard = document.getElementById('message-board');
+
+            messagesData.forEach(message => {
+            const messageElement = document.createElement('div');
+            messageElement.className = 'message';
+            messageElement.innerHTML = `
+                <p>${message.content}</p>
+                <div class="meta">
+                <strong>De:</strong> ${message.user}
+                <a href="#" class="reply-link">Responder</a>
+                </div>
+                <div class="reply-form" style="display: none;">
+                <form class="reply-message-form">
+                    <input type="text" class="reply-name" placeholder="Nome" required>
+                    <textarea class="reply-message" placeholder="Digite sua resposta" required></textarea>
+                    <button type="submit">Enviar</button>
+                </form>
+                </div>
+            `;
+
+            messageBoard.appendChild(messageElement);
+
+            const replyLink = messageElement.querySelector('.reply-link');
+            replyLink.addEventListener('click', function(event) {
+                event.preventDefault();
+                const replyForm = messageElement.querySelector('.reply-form');
+                replyForm.style.display = 'block';
+            });
+
+            const replyForm = messageElement.querySelector('.reply-message-form');
+            replyForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                // Lógica para enviar a resposta e atualizar as mensagens no banco de dados
+                // Depois de atualizar as mensagens no banco de dados, você pode atualizar a exibição chamando a função generateMessages() novamente
+                generateMessages();
+            });
+            });
+        }
+        // Chamada inicial para gerar as mensagens no mural
+        generateMessages();
+        </script>
+
+        <footer class="footer">
+            <button id="expand-form">Nova mensagem</button>
+            <form id="message-form" class="footer-form">
+                <h2 style="color: #1B6196;">Enviar Mensagem</h2>
+                <input type="text" id="name" placeholder="Nome" style="margin-bottom: 5px;" required><br>
+                <textarea id="message" placeholder="Digite sua mensagem" style="margin-bottom: 5px;" required></textarea><br>
+                <button type="submit" style="background-color: #1B6196;">Enviar</button>
+        </form>
+        </footer>
+
+        <script>
+            // JavaScript para interatividade do mural de mensagens
+            const form = document.getElementById('message-form');
+            const nameInput = document.getElementById('name');
+            const messageInput = document.getElementById('message');
+            const messageBoard = document.getElementById('message-board');
+            const expandFormButton = document.getElementById('expand-form');
+            const footerForm = document.getElementById('message-form');
+            const footerButton = document.getElementById('expand-form');
+
+            footerButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            footerForm.classList.toggle('show');
+
+            if (footerForm.classList.contains('show')) {
+                footerButton.textContent = 'X';
+            } else {
+                footerButton.textContent = 'Nova mensagem';
+            }
+            });
+
+            const name = nameInput.value;
+            const message = messageInput.value;
+
+            const messageElement = document.createElement('div');
+            messageElement.className = 'message';
+            messageElement.innerHTML = `
+                <p>${message}</p>
+                <div class="meta">
+                <strong>De:</strong> ${name}
+                <a href="#" class="reply-link">Responder</a>
+                </div>
+                <div class="reply-form" style="display: none;">
+                <form class="reply-message-form">
+                    <input type="text" class="reply-name" placeholder="Seu nome" required>
+                    <textarea class="reply-message" placeholder="Digite sua resposta" required></textarea>
+                    <button type="submit">Enviar</button>
+                </form>
+                </div>
+            `;
+
+            messageBoard.appendChild(messageElement);
+
+            // Limpar os campos após o envio
+            nameInput.value = '';
+            messageInput.value = '';
+
+            // Adicionar evento de clique para exibir o formulário de resposta
+            const replyLink = messageElement.querySelector('.reply-link');
+            replyLink.addEventListener('click', function(event) {
+                event.preventDefault();
+                const replyForm = messageElement.querySelector('.reply-form');
+                replyForm.style.display = 'block';
+            });
+
+            // Adicionar evento de submissão para a resposta
+            const replyForm = messageElement.querySelector('.reply-message-form');
+            replyForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const replyNameInput = messageElement.querySelector('.reply-name');
+                const replyMessageInput = messageElement.querySelector('.reply-message');
+
+                const replyName = replyNameInput.value;
+                const replyMessage = replyMessageInput.value;
+
+                const replyMessageElement = document.createElement('div');
+                replyMessageElement.className = 'message reply';
+                replyMessageElement.innerHTML = `
+                <p>${replyMessage}</p>
+                <div class="meta">
+                    <strong>De:</strong> ${replyName}
+                </div>
+                `;
+
+                messageElement.appendChild(replyMessageElement);
+
+                // Limpar os campos após o envio da resposta
+                replyNameInput.value = '';
+                replyMessageInput.value = '';
+
+                // Esconder o formulário de resposta
+                replyForm.style.display = 'none';
+            });
+        </script>
+    </body>
+</html>
