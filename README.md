@@ -4,18 +4,18 @@
 
 Esta imagem Docker configura uma aplicação simples de mural de mensagens usando o Nginx para servir uma página da web com um mural interativo. As mensagens são geradas dinamicamente a partir de um conjunto de dados predefinido.
 
-## Execução
+## Utilização
 
-### Construir a Imagem Docker
+### Puxar a Imagem do Docker Hub
 
 ```bash
-docker build -t mural-mensagens-xpto .
+docker pull julianamaria/nginx-intranet
 ```
 
 ### Executar o Container Docker
 
 ```bash
-docker run -d -p 8080:80 --name container-mural-xpto mural-mensagens-xpto
+docker run -d -p 8080:80 --name container-mural-xpto julianamaria/nginx-intranet
 ```
 
 Acesse a aplicação navegando até `http://localhost:8080` em seu navegador.
